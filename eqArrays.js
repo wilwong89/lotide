@@ -6,7 +6,7 @@ const assertEqual = function(actual, expected) {
   }
 };
 
-const eqArrays = function (obj1, obj2) {
+const eqArrays = function(obj1, obj2) {
   //Test for same object referenced
   if (obj1 === obj2) return true;
 
@@ -18,9 +18,9 @@ const eqArrays = function (obj1, obj2) {
   if (obj1keys.length !== obj2keys.length) return false;
 
   //Iterate through keys, ending early on mismatches
-  for (i of obj1keys) {
+  for (let i of obj1keys) {
     //Test for nesting
-    if ( isObject(obj1[i]) || isArray(obj1[i]) ) {
+    if (isObject(obj1[i]) || isArray(obj1[i])) {
       if (!eqArrays(obj1[i], obj2[i])) {
         return false;
       }
@@ -32,15 +32,15 @@ const eqArrays = function (obj1, obj2) {
   return true;
 };
 
-const isArray = function (toBeTested = false) {
-  var arrayConstruc = [].constructor;
+const isArray = function(toBeTested = false) {
+  let arrayConstruc = [].constructor;
   let testConstruc = toBeTested.constructor;
 
   return testConstruc === arrayConstruc;
 };
 
-const isObject = function (toBeTested = false) {
-  var objectConstruc = ({}).constructor;
+const isObject = function(toBeTested = false) {
+  let objectConstruc = ({}).constructor;
   let testConstruc = toBeTested.constructor;
 
   return testConstruc === objectConstruc;
@@ -53,7 +53,7 @@ assertEqual(eqArrays(["1", "2", "3"], ["1", "2", "3"]), true);
 assertEqual(eqArrays(["1", "2", "3"], ["1", "2", 3]), false);
 
 assertEqual(eqArrays([["a", "b"], "2", "3"], [["a", "b"], "2", "3"]), true);
-assertEqual(eqArrays([["a", "b"], "2", "3"], [["a", "b"], "2", 3]), false)
+assertEqual(eqArrays([["a", "b"], "2", "3"], [["a", "b"], "2", 3]), false);
 
 const test = [1,2,3];
 assertEqual(eqArrays(test, test), true);
@@ -63,4 +63,4 @@ assertEqual(eqArrays([{a: "test", b: "test2"}, "2", "3"], [{a: "test", b: "fail"
 assertEqual(eqArrays([{a: "test", b: "test2"}, "2", "3"], [{a: "test", bc: "test2"}, "2", "3"]), false);
 assertEqual(eqArrays([{a: "test", b: "test2"}, "2", "3"], [{a: "test", bc: "fail"}, "2", "3"]), false);
 
-assertEqual( eqArrays( {a: "test", b: "test2"}, {b: "test2", a: "test"} ), true );
+assertEqual(eqArrays({a: "test", b: "test2"}, {b: "test2", a: "test"}), true);
