@@ -46,38 +46,21 @@ const isObject = function(toBeTested = false) {
   return testConstruc === objectConstruc;
 };
 
-const without = function(source, itemsToRemove) {
+const flatten = function (array) {
   let newArray = [];
-  let sourceKeys = Object.keys(source);
-  let itemsToRemoveKeys = Object.keys(itemsToRemove);
-
-  sourceKeys.forEach((element) => {
-    let pushCurrent = true;
-
-    itemsToRemoveKeys.forEach((item) => {
-      if ((isObject(itemsToRemove[item]) && isObject(source[element]))
-        || (isArray(itemsToRemove[item]) && isArray(source[element]))) {
-        if (eqArrays(source[element], itemsToRemove[item])) {
-          pushCurrent = false;
-        }
-      } else if (itemsToRemove[item] === source[element]) {
-        pushCurrent = false;
-      }
-    });
-    
-    if (pushCurrent) newArray.push(source[element]);
-  });
-
+  
+  array.forEach(element => {
+    if (Array.isArray(element)) {
+      flatten(element).forEach(item => {
+        newArray.push(item)
+      })
+    } else {
+      newArray.push(element);
+    }
+  })
   return newArray;
 };
 
-assertArraysEqual(without([1, 2, 3], [1]), [2, 3]);
-assertArraysEqual(without(["1", "2", "3"], [1, 2, "3"]), ["1", "2"]);
+console.log(flatten([1, 2, [3, 4], 5, [6]]))
 
-assertArraysEqual(without(["1", "2", [1]], ["1", [1], "2"]), []);
-assertArraysEqual(without(["1", "2", [1]], [[3], "2", 1]), ["1", [1]]);
-
-const words = ["hello", "world", "lighthouse"];
-console.log(without(["hello", "world", "lighthouse"], ["lighthouse"])); // no need to capture return value for this test case
-//Make sure the original array was not altered by the without function
-assertArraysEqual(words, ["hello", "world", "lighthouse"]);
+console.log(flatten([1, 2, [3, ["a", "b", [8, 9, 0]]], 5, [6]]))
