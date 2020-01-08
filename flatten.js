@@ -46,21 +46,21 @@ const isObject = function(toBeTested = false) {
   return testConstruc === objectConstruc;
 };
 
-const flatten = function (array) {
+const flatten = function(array) {
   let newArray = [];
   
   array.forEach(element => {
     if (Array.isArray(element)) {
       flatten(element).forEach(item => {
-        newArray.push(item)
-      })
+        newArray.push(item);
+      });
     } else {
       newArray.push(element);
     }
-  })
+  });
   return newArray;
 };
 
-console.log(flatten([1, 2, [3, 4], 5, [6]]))
+console.log(flatten([1, 2, [3, 4], 5, [6]]));
 
-console.log(flatten([1, 2, [3, ["a", "b", [8, 9, 0]]], 5, [6]]))
+console.log(flatten([1, 2, [3, ["a", "b", [8, 9, 0]]], 5, [6]]));
