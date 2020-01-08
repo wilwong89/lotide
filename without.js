@@ -46,28 +46,38 @@ const isObject = function(toBeTested = false) {
   return testConstruc === objectConstruc;
 };
 
-const middle = function(inputArray) {
+const without = function(source, itemsToRemove) {
   let newArray = [];
+  let sourceKeys = Object.keys(source);
+  let itemsToRemoveKeys = Object.keys(itemsToRemove);
 
-  if (inputArray.length < 2) return newArray;
-  let middleIndex = (inputArray.length - 1) / 2;
-  let keysForMiddleElements = [];
+  sourceKeys.forEach((element, i) => {
+    let pushCurrent = true;
 
-  //Add middle index rounded down, if not integer, add middle index rounded up.
-  keysForMiddleElements.push(Math.floor(middleIndex));
-  if (middleIndex % 2 !== 0) {
-    keysForMiddleElements.push(Math.ceil(middleIndex));
-  }
+    itemsToRemoveKeys.forEach((item, j) => {
+      if ((isObject(itemsToRemove[item]) && isObject(source[element])) 
+        || (isArray(itemsToRemove[item]) && isArray(source[element]))) {
+        if (eqArrays(source[element], itemsToRemove[item])) {
+          pushCurrent = false;
+        }
+      } else if (itemsToRemove[item] === source[element]) {
+        pushCurrent = false;
+      }
+    })
+    
+    if (pushCurrent) newArray.push(source[element]);
+  })
 
-  keysForMiddleElements.forEach(element => {
-    newArray.push(inputArray[element]);
-  });
-  
   return newArray;
 };
 
-const testArray1 = [1, 2, 3, 4, 5];
-const testArray2 = [1, 2, 3, 4, 5, 6];
+assertArraysEqual(without([1, 2, 3], [1]), [2, 3])
+assertArraysEqual(without(["1", "2", "3"], [1, 2, "3"]), ["1", "2"])
 
-assertArraysEqual(middle(testArray1), [testArray1[2]]);
-assertArraysEqual(middle(testArray2), [testArray1[2],testArray1[3]]);
+assertArraysEqual(without(["1", "2", [1]], ["1", [1], "2"]), [])
+assertArraysEqual(without(["1", "2", [1]], [[3], "2", 1]), ["1", [1]])
+
+const words = ["hello", "world", "lighthouse"];
+console.log(without(["hello", "world", "lighthouse"], ["lighthouse"])); // no need to capture return value for this test case
+//Make sure the original array was not altered by the without function
+assertArraysEqual(words, ["hello", "world", "lighthouse"]);
