@@ -22,5 +22,5 @@ const countLetters = function(inputString = "") {
 
   return letterCount;
 };
-
+assertEqual([],[]);
 console.log(countLetters("hallowed"));

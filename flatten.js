@@ -62,5 +62,5 @@ const flatten = function(array) {
 };
 
 console.log(flatten([1, 2, [3, 4], 5, [6]]));
-
+assertArraysEqual([],[]);
 console.log(flatten([1, 2, [3, ["a", "b", [8, 9, 0]]], 5, [6]]));
