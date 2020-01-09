@@ -13,7 +13,6 @@ const bestTVShowsByGenre = {
 };
 
 const findKeyByValue = function(tvShowObject = {}, inputValue = "",) {
-
   for (const key in tvShowObject) {
     if (tvShowObject[key] === inputValue) {
       return key;
